@@ -17,9 +17,9 @@ phases:
   build:
     commands:
       - echo Push to S3
-      - helm s3 init ${S3_CHARTS_URL}
-      - helm repo add ${REPO_NAME} ${S3_CHARTS_URL}
-      - helm package ${CODEBUILD_SRC_DIR}
+      - helm s3 init $S3_CHARTS_URL
+      - helm repo add $REPO_NAME $S3_CHARTS_URL
+      - helm package $CODEBUILD_SRC_DIR
       - helm s3 push --relative ${CHART_NAME}-0.1.0.tgz ${REPO_NAME}
   post_build:
     commands:
