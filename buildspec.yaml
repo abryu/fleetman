@@ -23,7 +23,7 @@ phases:
       - helm s3 init $S3_CHARTS_URL
       - helm repo add $REPO_NAME $S3_CHARTS_URL
       - helm package $CODEBUILD_SRC_DIR
-      - helm s3 push --relative $CODEBUILD_SRC_DIR/${name}-${version}.tgz ${REPO_NAME}
+      - helm s3 push --relative $CODEBUILD_SRC_DIR/${name}-${version}.tgz ${REPO_NAME} --acl="public-read"
   post_build:
     commands:
       - echo Build completed on `date`
