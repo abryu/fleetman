@@ -16,8 +16,9 @@ phases:
       - helm plugin install https://github.com/hypnoglow/helm-s3.git
   build:
     commands:
+      - helm s3 version
       - echo Push to S3
-      - helm s3 init s3://aws-kube-demo-project/charts
+      - helm s3 init $S3_CHARTS_URL
       - helm repo add $REPO_NAME $S3_CHARTS_URL
       - helm package $CODEBUILD_SRC_DIR
       - helm s3 push --relative ${CHART_NAME}-0.1.0.tgz ${REPO_NAME}
