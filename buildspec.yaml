@@ -1,8 +1,16 @@
 version: 0.2
 
+env:
+  variables:
+    S3_CHARTS_URL: s3://aws-kube-demo-project/charts
+    CHART_NAME: fleetman
+    REPO_NAME: temp
+    AWS_REGION: us-east-1
+    HELM_S3_MODE: 3
 phases:
   pre_build:
     commands:
+      - ls -R
       - echo Install Helm S3
       - curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
       - helm plugin install https://github.com/hypnoglow/helm-s3.git
@@ -10,9 +18,9 @@ phases:
     commands:
       - echo Push to S3
       - helm s3 init ${S3_CHARTS_URL}
-      - helm repo add temp ${S3_CHARTS_URL}
-      - helm package /home/ec2-user/fleetman -d /home/ec2-user/
-      - helm s3 push --relative /home/ec2-user/fleetman-0.1.0.tgz fleetman
+      - helm repo add ${REPO_NAME} ${S3_CHARTS_URL}
+      - helm package ${CODEBUILD_SRC_DIR}
+      - helm s3 push --relative ${CHART_NAME}-0.1.0.tgz ${REPO_NAME}
   post_build:
     commands:
       - echo Build completed on `date`
