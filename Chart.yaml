@@ -1,6 +1,6 @@
 apiVersion: v2
 name: fleetman
-description: A Helm chart for fleetman
+description: A Helm chart for fleetman microservice
 
 # A chart can be either an 'application' or a 'library' chart.
 #
