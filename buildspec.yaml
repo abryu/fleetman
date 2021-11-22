@@ -9,13 +9,13 @@ phases:
     commands:
       - echo Install Helm S3
       - curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-      - helm plugin install https://github.com/hypnoglow/helm-s3.git --acl="public-read"
+      - helm plugin install https://github.com/hypnoglow/helm-s3.git
       - version=`helm show chart ${CODEBUILD_SRC_DIR} | grep version | cut -d':' -f2 | tr -d ' '`
       - name=`helm show chart ${CODEBUILD_SRC_DIR} | grep name | cut -d':' -f2 | tr -d ' '`
   build:
     commands:
       - echo Push to S3
-      - helm s3 init $S3_CHARTS_URL
+      - helm s3 init $S3_CHARTS_URL --acl="public-read"
       - helm repo add $REPO_NAME $S3_CHARTS_URL
       - helm package $CODEBUILD_SRC_DIR
       - helm s3 push --relative $CODEBUILD_SRC_DIR/${name}-${version}.tgz ${REPO_NAME} --acl="public-read"
